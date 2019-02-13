@@ -58,7 +58,7 @@ class role : public g_list
 public:
 	int roles[7] = { 0, 1, 2, 3, 4, 5, 6 }; //0-hit;1-2-red;3-6-blue
 	int used_role[7];
-	const char* pls[7] = { "p1", "p2", "p3", "p4", "p5", "p6", "p7" };
+	const char* plrs[7] = { "p1", "p2", "p3", "p4", "p5", "p6", "p7" };
 	int test_role;
 	int used_num = 0;
 	bool fucked;
@@ -77,7 +77,7 @@ void role::choice_role() {
 			}
 		} while (fucked == true);
 
-		name_role = pls[i];
+		name_role = plrs[i];
 		used_role[used_num] = test_role;
 		used_num++;
 		comp_in(name_role, test_role);
@@ -88,9 +88,14 @@ void role::choice_role() {
 
 int elections() 
 {
+	gg* c = new gg();
+	c = head;
 	string firts_steper;
 	bool ya = 1, nei = 0;
-	firts_steper=
+	int firts_steper = rand() % 10;
+	for (int i = 0; i < firts_steper; i++)
+		c = r.head->next;
+
 }
 
 int main() {
