@@ -1,30 +1,29 @@
 #include <time.h>
 #include <stdlib.h>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
-char p1, p2, p3, p4, p5, p6, p7;
-
-/*struct gg {
-	char name[10];
+struct gg {
+	string name;
 	int role;
 	gg* next;
+	gg* prev;
 };
 
 class g_list {
 public:
-	gg* head; // Первый элемент (голова) списка
-	gg* tail; // Последний элемент (хвост) списка
 	g_list();
 	~g_list();
+	gg* head; // Первый элемент (голова) списка
+	gg* tail; // Последний элемент (хвост) списка
 	bool chk_empty();
-	void comp_in(char* n, int r);
-	gg* search(char *n);
-	void comp_edit(gg &c, int* r);
-	void print();
-	void comp_del(gg* c);
-	void write_in_file();
+	void comp_in(char n, int r);
+	//gg* search(string n);
+	//void comp_edit(gg &c, int* r);
+	//void print();
+	//void comp_del(gg* c);	
 };
 
 g_list::g_list() : head(nullptr), tail(nullptr) {}
@@ -42,10 +41,9 @@ bool g_list::chk_empty()
 	return (head == nullptr);
 }
 
-void g_list::comp_in(char* n, int r) {
+void g_list::comp_in(char n, int r) {
 	gg* c = new gg();
-	int nn;
-	strcpy_s(c->name, 20, n);
+	c->name = n;
 	c->role = r;
 	c->next = nullptr;
 	if (chk_empty())
@@ -54,16 +52,18 @@ void g_list::comp_in(char* n, int r) {
 		tail->next = c;
 	tail = c;
 }
-*/
-class role {
+
+class role : public g_list
+{
 public:
 	int roles[7] = { 0, 1, 2, 3, 4, 5, 6 }; //0-hit;1-2-red;3-6-blue
 	int used_role[7];
-	char pls[7] = { p1, p2, p3, p4, p5, p6, p7 };
+	const char* pls[7] = { "p1", "p2", "p3", "p4", "p5", "p6", "p7" };
 	int test_role;
 	int used_num = 0;
 	bool fucked;
 	void choice_role();
+	char name_role;
 };
 
 void role::choice_role() {
@@ -77,10 +77,11 @@ void role::choice_role() {
 			}
 		} while (fucked == true);
 
-		pls[i] = test_role;
+		name_role = *pls[i];
 		used_role[used_num] = test_role;
 		used_num++;
-		cout << pls[i] << " = " << endl;
+		comp_in(name_role, test_role);
+		cout << name_role << endl << test_role << endl << endl;
 	}
 }
 
@@ -88,11 +89,9 @@ int main() {
 	setlocale(LC_ALL, "Rus");
 	srand((unsigned)time(NULL));
 
-	//g_list g;
+	g_list g;
 	role r;
-
 	r.choice_role();
-
 
 	system("PAUSE");
 	return 0;
