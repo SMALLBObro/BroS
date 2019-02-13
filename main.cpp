@@ -85,6 +85,14 @@ void role::choice_role() {
 	}
 }
 
+
+int elections() 
+{
+	string firts_steper;
+	bool ya = 1, nei = 0;
+	firts_steper=
+}
+
 int main() {
 	setlocale(LC_ALL, "Rus");
 	srand((unsigned)time(NULL));
