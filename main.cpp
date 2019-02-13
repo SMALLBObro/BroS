@@ -45,12 +45,19 @@ void g_list::comp_in(string n, int r) {
 	gg* c = new gg();
 	c->name = n;
 	c->role = r;
-	c->next = nullptr;
-	if (chk_empty())
+	if (chk_empty()) {
+		c->next = nullptr;
+		c->prev = nullptr;
 		head = c;
-	else
+		tail = c;
+	}
+	else {
 		tail->next = c;
-	tail = c;
+		c->prev = tail;
+		tail = c;
+		tail->next = head;
+		head->prev = tail;
+	}
 }
 
 class role : public g_list
@@ -91,7 +98,11 @@ int main() {
 
 	g_list g;
 	role r;
+
 	r.choice_role();
+
+	//17 законов
+
 
 	system("PAUSE");
 	return 0;
