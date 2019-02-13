@@ -19,7 +19,7 @@ public:
 	gg* head; // Первый элемент (голова) списка
 	gg* tail; // Последний элемент (хвост) списка
 	bool chk_empty();
-	void comp_in(char n, int r);
+	void comp_in(string n, int r);
 	//gg* search(string n);
 	//void comp_edit(gg &c, int* r);
 	//void print();
@@ -41,7 +41,7 @@ bool g_list::chk_empty()
 	return (head == nullptr);
 }
 
-void g_list::comp_in(char n, int r) {
+void g_list::comp_in(string n, int r) {
 	gg* c = new gg();
 	c->name = n;
 	c->role = r;
@@ -63,7 +63,7 @@ public:
 	int used_num = 0;
 	bool fucked;
 	void choice_role();
-	char name_role;
+	string name_role;
 };
 
 void role::choice_role() {
@@ -77,7 +77,7 @@ void role::choice_role() {
 			}
 		} while (fucked == true);
 
-		name_role = *pls[i];
+		name_role = pls[i];
 		used_role[used_num] = test_role;
 		used_num++;
 		comp_in(name_role, test_role);
