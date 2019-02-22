@@ -179,7 +179,7 @@ int main() {
 	r.print();
 	r.elections();
 	//17 законов (11 fashicst, 6 liberal)
-	//////
+	///////////////123////////
 	system("PAUSE");
 	return 0;
 }
