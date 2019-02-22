@@ -146,7 +146,7 @@ void role::delete_law() {
 int role::elections()
 {
 	president = head;
-	bool yah = 1, nein = 0;
+	bool ya = 1, nein = 0;
 	int choice_player;
 	int first_steper = rand() % 7;
 	for (int i = 0; i < first_steper; i++) {
