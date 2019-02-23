@@ -10,9 +10,13 @@ using namespace std;
 void start()
 {
 	char gamemode;
-	cout << "Приветствуем Вас в нашей игре \"Тайный Гитлер\"!"<<endl;
-	cout << "\t\tЧтобы начать игру, нажмите Y. Выйти - N: "; cin >> gamemode;
-	if (gamemode != 'y') exit(0);
+	cout << "Приветствуем Вас в нашей игре \"Тайный Гитлер\"!" << endl;
+	cout << "\t\tЧтобы начать игру, нажмите Y. Выйти - N: ";
+	while (true) {
+		cin >> gamemode;
+		if (gamemode == 'y') break;
+		if (gamemode == 'n') exit(0); else cout << "Неверная кнопка, повторите своё действие!" << endl;
+	}
 }
 
 struct gg {
@@ -171,23 +175,25 @@ void role::elections()
 	cout << "\t5 - " << president->prev->prev->name << endl;
 	cout << "\t6 - " << president->prev->name << endl;
 	cout << "Ваш выбор: ";
+
 	cin >> choice_player;
+
 	cout << "\t\tПроводим голосование:" << endl;
 	system("pause");
 	bool voice; int j;
 	int law;
-	for ( j = 1; j < 4; j++)
+	for (j = 1; j < 4; j++)
 	{
 		cout << j << " голосование:" << endl;
 		int ya = 0, nein = 0;
 		for (int i = 0; i < 7; i++)
 		{
 			cout << "Игрок под именем #" << president->name << "# голосуй!(1 - ya, 0 - nein): "; cin >> voice;
-			if (voice == 1) ya++; 
+			if (voice == 1) ya++;
 			else nein++;
 			president = president->next;
 		}
-		
+
 		if (ya > nein)
 		{
 			for (int i = 0; i < choice_player; i++)
@@ -198,7 +204,7 @@ void role::elections()
 			break;
 		}
 		else continue;
-		
+
 	}
 	if (j > 3)
 	{
