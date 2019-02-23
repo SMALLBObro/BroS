@@ -1,15 +1,18 @@
-#include <time.h>
+﻿#include <time.h>
 #include <stdlib.h>
 #include <iostream>
 #include <string>
+#include <windows.h>
+
 
 using namespace std;
 
 void start()
 {
 	char gamemode;
-	cout << "\t\tЧтобы начать игру, нажмите Y или выйти - N"; cin >> gamemode;
-	if (gamemode == "y"); else if (gamemode != "y") exit;
+	cout << "Приветствуем Вас в нашей игре \"Тайный Гитлер\"!"<<endl;
+	cout << "\t\tЧтобы начать игру, нажмите Y. Выйти - N: "; cin >> gamemode;
+	if (gamemode != 'y') exit(0);
 }
 
 struct gg {
@@ -42,7 +45,7 @@ public:
 	bool fucked;
 	void choice_role();
 	string name_role;
-	int elections();
+	void elections();
 	gg* president;
 	gg* cancler;
 	void deck_building();
@@ -150,7 +153,7 @@ void role::delete_law() {
 }
 
 //Выборы 
-int role::elections()
+void role::elections()
 {
 	president = head;
 	int choice_player;
@@ -159,34 +162,56 @@ int role::elections()
 		president = president->next;
 	}
 	cancler = president;
-	cout << endl << "\t\tТоварищ президент был определён: " << president->name << endl;
-	cout << "1 - " << president->next->name << endl;
-	cout << "2 - " << president->next->next->name << endl;
-	cout << "3 - " << president->next->next->next->name << endl;
-	cout << "4 - " << president->prev->prev->prev->name << endl;
-	cout << "5 - " << president->prev->prev->name << endl;
-	cout << "6 - " << president->prev->name << endl;
-	cout << "Введите номер игрока, которого хотите сделать канцлером: ";
+	cout << endl << "\t\tТоварищ президент был определён, это игрок: " << president->name << endl;
+	cout << "Выбирете игрока, которого хотите назначить канцлером: " << endl;
+	cout << "\t1 - " << president->next->name << endl;
+	cout << "\t2 - " << president->next->next->name << endl;
+	cout << "\t3 - " << president->next->next->next->name << endl;
+	cout << "\t4 - " << president->prev->prev->prev->name << endl;
+	cout << "\t5 - " << president->prev->prev->name << endl;
+	cout << "\t6 - " << president->prev->name << endl;
+	cout << "Ваш выбор: ";
 	cin >> choice_player;
-	cout << "Проводим голосование:"<<endl;
-	bool voice;
-	metka:int ya = 0, nein = 0;
-	for (int i = 0; i < 6; i++)
+	cout << "\t\tПроводим голосование:" << endl;
+	system("pause");
+	bool voice; int j;
+	int law;
+	for ( j = 1; j < 4; j++)
 	{
-		cout << "Игрок под именем " << president->name << " голосуй!(1 - ya, 0 - nein)"; cin >> voice;
-		if (voice)ya++; else nein++;
-		president = president->next
-	}
-	if (ya > nein)
-	{
-		for (int i = 0; i < choice_player; i++)
+		cout << j << " голосование:" << endl;
+		int ya = 0, nein = 0;
+		for (int i = 0; i < 7; i++)
 		{
-			cancler = cancler->next;
+			cout << "Игрок под именем #" << president->name << "# голосуй!(1 - ya, 0 - nein): "; cin >> voice;
+			if (voice == 1) ya++; 
+			else nein++;
+			president = president->next;
 		}
-	}; 
-	else goto metka;
-	cout << "Канцлер: " << cancler->name << endl;
-	return 9;
+		
+		if (ya > nein)
+		{
+			for (int i = 0; i < choice_player; i++)
+			{
+				cancler = cancler->next;
+				j = 1;
+			}
+			break;
+		}
+		else continue;
+		
+	}
+	if (j > 3)
+	{
+		law = laws[rand() % 17];
+		cout << "Выбирается случайный закон, потому что канцлер не был выбран трижды...Подождите..." << endl;
+		Sleep(3000);
+		if (law == 0) cout << "Выбран случайный закон: ФАШИСТСКИЙ!" << endl;
+		else cout << "Выбран случайный закон: ЛИБЕРАЛЬНЫЙ!" << endl;
+		goto m1;
+	}
+	cout << "Игрок #" << cancler->name << "# назначен канцлером! " << endl;
+m1:	system("pause");
+	system("cls");
 }
 
 int main() {
