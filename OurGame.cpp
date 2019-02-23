@@ -50,8 +50,11 @@ public:
 	void choice_role();
 	string name_role;
 	void elections();
+	gg* first_steper;
 	gg* president;
 	gg* cancler;
+	gg* last_cancler;
+	gg* last_president;
 	void deck_building();
 	void delete_law();
 };
@@ -161,39 +164,53 @@ void role::elections()
 {
 	president = head;
 	int choice_player;
-	int first_steper = rand() % 7;
-	for (int i = 0; i < first_steper; i++) {
-		president = president->next;
-	}
-	cancler = president;
-	cout << endl << "\t\tТоварищ президент был определён, это игрок: " << president->name << endl;
-	cout << "Выбирете игрока, которого хотите назначить канцлером: " << endl;
-	cout << "\t1 - " << president->next->name << endl;
-	cout << "\t2 - " << president->next->next->name << endl;
-	cout << "\t3 - " << president->next->next->next->name << endl;
-	cout << "\t4 - " << president->prev->prev->prev->name << endl;
-	cout << "\t5 - " << president->prev->prev->name << endl;
-	cout << "\t6 - " << president->prev->name << endl;
-	cout << "Ваш выбор: ";
-
-	cin >> choice_player;
-
-	cout << "\t\tПроводим голосование:" << endl;
-	system("pause");
+	int step = rand() % 7;
+	for (int i = 0; i < step; i++) president = president->next;
+	last_president = president;
 	bool voice; int j;
 	int law;
 	for (j = 1; j < 4; j++)
 	{
+		first_steper = president;
+		cancler = president;
+		last_cancler = cancler;
+		cout << endl << "\t\tТоварищ президент был определён, это игрок: " << first_steper->name << endl;
+		cout << "Выбирете игрока, которого хотите назначить канцлером: " << endl;
+		cout << "\t1 - " << first_steper->next->name << endl;
+		cout << "\t2 - " << first_steper->next->next->name << endl;
+		cout << "\t3 - " << first_steper->next->next->next->name << endl;
+		cout << "\t4 - " << first_steper->prev->prev->prev->name << endl;
+		cout << "\t5 - " << first_steper->prev->prev->name << endl;
+		cout << "\t6 - " << first_steper->prev->name << endl;
+		cout << "Ваш выбор: ";
+		while (true) {
+			cin >> choice_player;
+			for (int i = 0; i < choice_player; i++)
+			{
+				cancler = cancler->next;
+			}
+			if (cancler->name == last_cancler->name)
+				cout << "Вы не можете выбрать игрока, который бывший канцлер. Выберите другого:";
+			else {
+				cancler = president;
+				break;
+			}
+		}
+		cout << "\t\tПроводим голосование:" << endl;
+		system("pause");
+
 		cout << j << " голосование:" << endl;
 		int ya = 0, nein = 0;
 		for (int i = 0; i < 7; i++)
 		{
-			cout << "Игрок под именем #" << president->name << "# голосуй!(1 - ya, 0 - nein): "; cin >> voice;
+			cout << "Игрок под именем #" << first_steper->name << "# голосуй!(1 - ya, 0 - nein): "; cin >> voice;
 			if (voice == 1) ya++;
 			else nein++;
-			president = president->next;
+			first_steper = first_steper->next;
+			system("cls");
 		}
-
+		cout << "Проголосовало Ya: " << ya << " человек." << endl;
+		cout << "Проголосовало Nein: " << nein << " человек." << endl;
 		if (ya > nein)
 		{
 			for (int i = 0; i < choice_player; i++)
@@ -203,8 +220,12 @@ void role::elections()
 			}
 			break;
 		}
-		else continue;
-
+		else
+		{
+			president = president->next;
+			last_president = president->prev;
+			continue;
+		}
 	}
 	if (j > 3)
 	{
@@ -220,7 +241,8 @@ m1:	system("pause");
 	system("cls");
 }
 
-int main() {
+int main()
+{
 	setlocale(LC_ALL, "Rus");
 	srand((unsigned)time(NULL));
 	start();
