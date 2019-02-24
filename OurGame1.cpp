@@ -9,13 +9,19 @@ using namespace std;
 
 void start()
 {
-	char gamemode;
+	string gamemode;
 	cout << "Приветствуем Вас в нашей игре \"Тайный Гитлер\"!"<<endl;
 	cout << "\t\tЧтобы начать игру, нажмите Y. Выйти - N: "; 
 	while (true) {
 		cin >> gamemode;
-		if (gamemode == 'y') break;
-		if (gamemode == 'n') exit(0); else cout << "Неверная кнопка, повторите своё действие!" << endl;
+				if (gamemode == "y") 
+				{ 
+					system("cls");
+					cout << "0 - Гитлер; 1-2 - Фашисты; 3-6 - Либералы." << endl;
+					break;
+					
+				}
+		if (gamemode == "n") exit(0); else cout << "Неверная кнопка, повторите своё действие!" << endl;
 	}
 }
 
@@ -154,8 +160,8 @@ void role::deck_building() {
 
 void role::delete_law() {
 	gg* c = new gg();
-	c = tail;
-	tail = tail->prev;
+	c = tail_l;
+	tail_l = tail_l->prev;
 	delete c;
 }
 
@@ -182,7 +188,7 @@ void role::elections()
 	cout << "\t4 - " << first_steper->prev->prev->prev->name << endl;
 	cout << "\t5 - " << first_steper->prev->prev->name << endl;
 	cout << "\t6 - " << first_steper->prev->name << endl;
-	cout << "Ваш выбор: ";
+	cout << "Ваш выбор: ";//проверка игрока,он бывший канцлер или нет
 	while (true) {
 		cin >> choice_player;
 		for (int i = 0; i < choice_player; i++)
@@ -199,7 +205,7 @@ void role::elections()
 	cout << "\t\tПроводим голосование:" << endl;
 	system("pause");
 	
-		cout << j << " голосование:" << endl;
+		cout << j << " голосование:" << endl;//j - счётчик. Какое голосование по счёту (j>3 - рандом закон).
 		int ya = 0, nein = 0;
 		for (int i = 0; i < 7; i++)
 		{
@@ -211,15 +217,16 @@ void role::elections()
 		}
 		cout << "Проголосовало Ya: " << ya << " человек." << endl;
 		cout << "Проголосовало Nein: " << nein << " человек." << endl;
+		//назначение канцлера  
 		if (ya > nein)
 		{
 			for (int i = 0; i < choice_player; i++)
 			{
 				cancler = cancler->next;
 				j = 1;
-			}
+			} 
 			break;
-		}
+		}		
 		else
 		{
 			president = president->next; 
@@ -236,6 +243,9 @@ void role::elections()
 		goto m1;
 	}
 	cout << "Игрок #" << cancler->name << "# назначен канцлером! " << endl;
+
+
+
 m1:	system("pause");
 	system("cls");
 }
