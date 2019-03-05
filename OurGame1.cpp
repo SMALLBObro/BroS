@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void start()
+/*void start()
 {
 	string gamemode;
 	cout << "Приветствуем Вас в нашей игре \"Тайный Гитлер\"!" << endl;
@@ -23,7 +23,7 @@ void start()
 		}
 		if (gamemode == "n") exit(0); else cout << "Неверная кнопка, повторите своё действие!" << endl;
 	}
-}
+}*/
 
 struct gg {
 	string name;
@@ -53,7 +53,6 @@ public:
 	int used_laws[17];
 	int test_law;
 	int used_role_num = 0;
-	int fash_law = 0, lib_law = 0;
 	gg* random_law;
 	//-----------------
 
@@ -89,6 +88,13 @@ public:
 	gg* second_card;
 	gg* third_card;
 	int res_law;
+	//----------------
+
+	//------Party-----
+	int lib_law = 0;		//Для победы 5
+	int fash_law = 0;		//Для победы 6//После принятия 1 - внеочередные выборы//2 - исследование лояльности
+							//3-Просмотр законов//4-Уничтожение//5-Право вето
+							//!!После принятия 3 законов Фаши выиграют, если канслером станет Гитлер!!
 };
 
 
@@ -215,45 +221,42 @@ bool role::chk_cons(int cc) {
 
 void role::event_fash_2()
 {
-	if (fash_law == 2)
+	cout << "Введите номер игрока, которого хотите проверить: " << endl;
+	cout << "\t1 - " << first_steper->next->name << endl;
+	cout << "\t2 - " << first_steper->next->next->name << endl;
+	cout << "\t3 - " << first_steper->next->next->next->name << endl;
+	cout << "\t4 - " << first_steper->prev->prev->prev->name << endl;
+	cout << "\t5 - " << first_steper->prev->prev->name << endl;
+	cout << "\t6 - " << first_steper->prev->name << endl;
+	cout << "Ваш выбор: "; cin >> choice_player;
+	if (choice_player > 1 || choice_player < 6)
 	{
-		cout << "Введите номер игрока, которого хотите проверить: " << endl;
-		cout << "\t1 - " << first_steper->next->name << endl;
-		cout << "\t2 - " << first_steper->next->next->name << endl;
-		cout << "\t3 - " << first_steper->next->next->next->name << endl;
-		cout << "\t4 - " << first_steper->prev->prev->prev->name << endl;
-		cout << "\t5 - " << first_steper->prev->prev->name << endl;
-		cout << "\t6 - " << first_steper->prev->name << endl;
-		cout << "Ваш выбор: "; cin >> choice_player;
-		if (choice_player < 1 || choice_player >6)
+		for (int i = 0; i < choice_player; i++)
 		{
-			for (int i = 0; i < choice_player; i++)
-			{
-				first_steper = first_steper->next;
-			}
-			if (first_steper->role == 0 && first_steper->role == 1 && first_steper->role == 2)
-			{
-				cout << "ФАШИСТ!!!" << endl;
-			}
-			else cout << "ЛИБЕРАЛ!!!" << endl;
+			first_steper = first_steper->next;
 		}
-
+		if (first_steper->role == 0 && first_steper->role == 1 && first_steper->role == 2)
+		{
+			cout << "ФАШИСТ!!!" << endl;
+		}
+		else cout << "ЛИБЕРАЛ!!!" << endl;
 	}
 }
+
 
 //Выборы 
 void role::elections()
 {
 
 	bool voice, cansler_control;
+	first_steper = president;//ход от президента
+	last_cancler = cancler;
 	int j;
 	for (j = 1; j < 4; j++)
 	{
-		first_steper = president; //ход от президента
 		cancler = president;
-		last_cancler = cancler;
 		cout << endl << "\t\tТоварищ президент был определён, это игрок: " << first_steper->name << endl;
-		event_fash_2();
+		if (fash_law == 2) event_fash_2();
 		cout << "Выбирете игрока, которого хотите назначить канцлером: " << endl;
 		cout << "\t1 - " << first_steper->next->name << endl;
 		cout << "\t2 - " << first_steper->next->next->name << endl;
@@ -436,8 +439,6 @@ int main()
 	srand((unsigned)time(NULL));
 	//start();
 	role r;
-	r.fash_law = 0;
-	r.lib_law = 0;
 	r.deck_building();
 	r.choice_role();		//17 законов (11 fashicst, 6 liberal)
 	//r.print();
