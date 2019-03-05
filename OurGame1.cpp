@@ -58,6 +58,7 @@ public:
 
 	//------EVENTS------
 	void event_fash_2();
+	void event_fash_3();
 	bool gameover;
 
 	//------Players------
@@ -243,12 +244,16 @@ void role::event_fash_2()
 	}
 }
 
+void role::event_fash_3()
+{
+
+}
 
 //Выборы 
 void role::elections()
 {
 
-	bool voice, cansler_control;
+	int voice, cansler_control;
 	first_steper = president;//ход от президента
 	last_cancler = cancler;
 	int j;
@@ -264,7 +269,14 @@ void role::elections()
 		cout << "\t4 - " << first_steper->prev->prev->prev->name << endl;
 		cout << "\t5 - " << first_steper->prev->prev->name << endl;
 		cout << "\t6 - " << first_steper->prev->name << endl;
-		cout << "Ваш выбор: "; cin >> choice_player;		//проверка игрока,он бывший канцлер или нет
+		cout << "Ваш выбор: ";
+		while (true)
+		{
+			cin >> choice_player;		//проверка игрока,он бывший канцлер или нет
+			if (choice_player < 1 || choice_player>6) cout << "Ошибка, введите заново: ";
+			else break;
+		}
+
 		if (first_time_cansler != true) {
 			cansler_control = chk_cons(choice_player);
 			if (cansler_control == 0) {
@@ -277,12 +289,22 @@ void role::elections()
 
 		cout << j << " голосование:" << endl;//j - счётчик. Какое голосование по счёту (j>3 - рандом закон).
 		int ya = 0, nein = 0;
-		do {
-			cout << "Игрок под именем #" << first_steper->name << "# голосуй!(1 - ya, 0 - nein): "; cin >> voice;
-			if (voice == 1) ya++;
-			else nein++;
-			first_steper = first_steper->next;
-			system("cls");
+		do
+		{
+			cout << "Игрок под именем #" << first_steper->name << "# голосуй!(1 - ya, 0 - nein): ";
+			while (true)
+			{
+				cin >> voice;
+				if (voice == 0 || voice == 1)
+				{
+					if (voice == 1) ya++;
+					else if (voice == 0) nein++;
+					first_steper = first_steper->next;
+					system("cls");
+					break;
+				}
+				else cout << "Ошибка, введите заново:";
+			}
 		} while (first_steper != president);
 
 
@@ -326,6 +348,8 @@ void role::elections()
 
 m1:	system("pause");
 	system("cls");
+	pres_get_law();
+	president = president->next;
 }
 
 void role::chk_fash_law(gg* first_card, gg* second_card, gg* third_card, int res_law) {
@@ -368,19 +392,31 @@ void role::pres_get_law() {
 	chk_fash_law(first_card, second_card, third_card, 0);
 
 	cout << "Удаляй закон, мудила!!((" << endl;
-	cin >> res_law;
+	while (true)
+	{
+		cin >> res_law;
+		if (res_law > 0 && res_law < 4)
+		{
+			system("pause");
+			system("cls");
+			chk_fash_law(first_card, second_card, third_card, res_law);
+			cans_get_law(res_law);
+			break;
+		}
+		else	cout << "Ошибка, введите заново:";
+	}
 
-	system("pause");
-	system("cls");
-
-	chk_fash_law(first_card, second_card, third_card, res_law);
-	cans_get_law(res_law);
 }
 
 void role::cans_get_law(int res_law) {
 	int resed_law;
 	cout << "Выбирай закон, мудила!!((" << endl;
-	cin >> resed_law;
+	while (true)
+	{
+		cin >> resed_law;
+		if (resed_law < 0 || resed_law > 4) cout << "Ошибка, введите заново: ";
+		else break;
+	}
 	if (resed_law == 1) {
 		if (resed_law != res_law) {
 			if (first_card->role == 0) {
@@ -442,10 +478,9 @@ int main()
 	r.deck_building();
 	r.choice_role();		//17 законов (11 fashicst, 6 liberal)
 	//r.print();
+	r.take_pres();
 	do {
-		r.take_pres();
 		r.elections();
-		r.pres_get_law();
 	} while (true);
 
 	cout << "end!!!" << endl;
